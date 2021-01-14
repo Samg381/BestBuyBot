@@ -6,34 +6,39 @@ import time
 import ctypes
 import re
 import webbrowser
-import datetime
+import lxml
 webbrowser.register('chrome', None, webbrowser.BackgroundBrowser("C://Program Files (x86)//Google//Chrome"
                                                                  "//Application//chrome.exe"))
-# RTX 3080 Finder
+# Best Buy Bot
 # User defined variables
-Delay = 6
+DelayR = 8     # Specify delay (seconds) between stock checks. Beware too low a number.
+DelayP = 3    # Specify panic delay, or a lower delay to use during panic hours
+pHourS = 730  # Panic hour start time
+pHourE = 815  # Panic hour end time
+
+Diag = True  # Enables / Disables alert dialogue boxes
 
 URL = 'https://www.bestbuy.com/site/evga-geforce-rtx-3080-ftw3-ultra-gaming-10gb-gddr6' \
       '-pci-express-4-0-graphics-card/6436196.p?skuId=6436196'
 
 # URL = 'https://www.bestbuy.com/site/corsair-rmx-series-850w-atx12v-2-4-eps12v-2-92-80-' \
-#      'plus-gold-modular-power-supply-black/6229601.p?skuId=6229601'
+#     'plus-gold-modular-power-supply-black/6229601.p?skuId=6229601'
 
 # Declare our user agent. This tells the web server that we're a real browser, not a bot.
 headers = {'User-Agent': 'Chrome/75.0.3770.80'}
 
 
-def curtime():
+def curTime():
     t1 = time.localtime()
     return str(t1.tm_hour - 12) + str(t1.tm_min)
 
 
 while True:
-    # print('The time is: ' + samtime())
-    if 745 < int(curtime()) < 815:
-        DelayP = 3
+    print('The time is: ' + curTime())
+    if pHourS < int(curTime()) < pHourE:
+        delay = DelayP
     else:
-        DelayP = Delay
+        delay = DelayR
 
     # Load the webpage using our fake browser bot and save the data to the 'page' variable
     page = requests.get(URL, headers=headers)
@@ -54,8 +59,9 @@ while True:
             print('[ALRT] ITEM IS IN STOCK!')
             winsound.Beep(370 + x * 200, 80)
             x += 1
-        # ctypes.windll.user32.MessageBoxW(0, "Item is in stock!", "Stock Alert!", 1)
+        if Diag:
+            ctypes.windll.user32.MessageBoxW(0, "Item is in stock!", "Stock Alert!", 1)
     else:
         print('[WARN] Unexpected error.')
 
-    time.sleep(DelayP)
+    time.sleep(delay)
