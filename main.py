@@ -21,9 +21,6 @@ Diag = True  # Enables / Disables alert dialogue boxes
 URL = 'https://www.bestbuy.com/site/evga-geforce-rtx-3080-ftw3-ultra-gaming-10gb-gddr6' \
       '-pci-express-4-0-graphics-card/6436196.p?skuId=6436196'
 
-# URL = 'https://www.bestbuy.com/site/corsair-rmx-series-850w-atx12v-2-4-eps12v-2-92-80-' \
-#     'plus-gold-modular-power-supply-black/6229601.p?skuId=6229601'
-
 # Declare our user agent. This tells the web server that we're a real browser, not a bot.
 headers = {'User-Agent': 'Chrome/75.0.3770.80'}
 
