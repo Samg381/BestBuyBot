@@ -13,7 +13,7 @@ webbrowser.register('chrome', None, webbrowser.BackgroundBrowser("C://Program Fi
 # User defined variables
 DelayR = 8     # Specify delay (seconds) between stock checks. Beware too low a number.
 DelayP = 3    # Specify panic delay, or a lower delay to use during panic hours
-pHourS = 730  # Panic hour start time
+pHourS = 730  # Panic hour start time (12hr)
 pHourE = 815  # Panic hour end time
 
 Diag = True  # Enables / Disables alert dialogue boxes
@@ -25,14 +25,18 @@ URL = 'https://www.bestbuy.com/site/evga-geforce-rtx-3080-ftw3-ultra-gaming-10gb
 headers = {'User-Agent': 'Chrome/75.0.3770.80'}
 
 
-def curTime():
+def curtime():
     t1 = time.localtime()
+    if len(str(t1.tm_min)) < 2:
+        t1.tm_min = str(0) + str(t1.tm_min)
+    if len(str(t1.tm_hour)) < 2:
+        t1.tm_hour = str(0) + str(t1.tm_hour)
     return str(t1.tm_hour - 12) + str(t1.tm_min)
 
 
 while True:
-    print('The time is: ' + curTime())
-    if pHourS < int(curTime()) < pHourE:
+    print('The time is: ' + curtime())
+    if pHourS < int(curtime()) < pHourE:
         delay = DelayP
     else:
         delay = DelayR
