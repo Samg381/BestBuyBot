@@ -23,14 +23,14 @@ URL = 'https://www.bestbuy.com/site/evga-geforce-rtx-3080-ftw3-ultra-gaming-10gb
 headers = {'User-Agent': 'Chrome/75.0.3770.80'}
 
 
-def samtime():
+def curtime():
     t1 = time.localtime()
     return str(t1.tm_hour - 12) + str(t1.tm_min)
 
 
 while True:
     # print('The time is: ' + samtime())
-    if 745 < int(samtime()) < 815:
+    if 745 < int(curtime()) < 815:
         DelayP = 3
     else:
         DelayP = Delay
