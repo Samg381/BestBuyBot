@@ -6,7 +6,7 @@ import time
 import ctypes
 import re
 import webbrowser
-import lxml
+import os
 webbrowser.register('chrome', None, webbrowser.BackgroundBrowser("C://Program Files (x86)//Google//Chrome"
                                                                  "//Application//chrome.exe"))
 # Best Buy Bot
@@ -29,14 +29,18 @@ headers = {'User-Agent': 'Chrome/75.0.3770.80'}
 
 
 def curtime():
-    adjustedhours = 0
-    adjustedmins = 0
+    adjustedhours = 1
+    adjustedmins = 1
     t1 = time.localtime()
     if len(str(t1.tm_min)) < 2:
         adjustedmins = str(0) + str(t1.tm_min)
     if len(str(t1.tm_hour)) < 2:
         adjustedhours = str(0) + str(t1.tm_hour)
     return str(adjustedhours) + str(adjustedmins)
+
+
+def curitem():
+    return str(URLs.index(x) + 1)
 
 
 while True:
@@ -58,18 +62,20 @@ while True:
         SoldOut = Focus[0].find_all(text=re.compile('Sold Out|Coming Soon'))
 
         if SoldOut:
-            print('[MESG] Item ' + str(URLs.index(x)) + ' is out of stock.')
+            print('[MESG] Item ' + curitem() + ' is out of stock.')
         elif AddToCart:
             webbrowser.get('chrome').open(x)
             x = 0
             while x < 4:
-                print('[ALRT] ITEM ' + str(URLs.index(x)) + ' IS IN STOCK!')
+                print('[ALRT] ITEM ' + curitem() + ' IS IN STOCK!')
                 winsound.Beep(370 + x * 200, 80)
                 x += 1
             if Diag:
-                ctypes.windll.user32.MessageBoxW(0, 'Item ' + str(URLs.index(x)) + ' is in stock!', 'Stock Alert!', 1)
+                ctypes.windll.user32.MessageBoxW(0, 'Item ' + curitem() + ' is in stock!', 'Stock Alert!', 1)
         else:
             print('[WARN] Unexpected error.')
             if not AddToCart and not SoldOut:
-                print('         [DEBUG] Item ' + str(URLs.index(x)) + ' is neither sold out or in stock! Likely script error.')
+                print('         [DEBUG] Item ' + curitem() + ' is neither sold out or in stock! Likely script error.')
+
     time.sleep(delay - len(URLs))
+    os.system('cls||clear')
