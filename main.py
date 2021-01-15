@@ -11,10 +11,10 @@ webbrowser.register('chrome', None, webbrowser.BackgroundBrowser("C://Program Fi
                                                                  "//Application//chrome.exe"))
 # Best Buy Bot
 # User defined variables
-DelayR = 8     # Specify delay (seconds) between stock checks. Beware too low a number.
+DelayR = 8    # Specify delay (seconds) between stock checks. Beware too low a number.
 DelayP = 3    # Specify panic delay, or a lower delay to use during panic hours
-pHourS = 730  # Panic hour start time (12hr)
-pHourE = 815  # Panic hour end time
+pHourS = 1045  # Panic hour start time (24hr format!)
+pHourE = 1100  # Panic hour end time
 
 Diag = True  # Enables / Disables alert dialogue boxes
 
@@ -31,7 +31,7 @@ def curtime():
         t1.tm_min = str(0) + str(t1.tm_min)
     if len(str(t1.tm_hour)) < 2:
         t1.tm_hour = str(0) + str(t1.tm_hour)
-    return str(t1.tm_hour - 12) + str(t1.tm_min)
+    return str(t1.tm_hour) + str(t1.tm_min)
 
 
 while True:
