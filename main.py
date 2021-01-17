@@ -8,21 +8,25 @@ import re
 import webbrowser
 import os
 
+# BestBuyBot written by Samg381
+# https://github.com/Samg381/BestBuyBot
+
 # User defined variables
-Diag = False    # Enables an alert popup when an item is in-stock.
+Diag = False    # Enables an optional extra alert popup dialog box when an item is in-stock.
 Panic = True    # Enable panic mode: an increase in the rate of stock checks between certain hours.
 Clearc = True   # Clear console after every each each stock sweep.
+sLog = True     # Enables a logfile tracking when certain items were detected in stock.
 DelayR = 6      # Specify delay (seconds) between stock checks. Beware too low a number (you may be IP banned)
 DelayP = 4      # Specify panic delay, or a lower delay to use during panic hours
 pHourS = 1045   # (24hr format!) Panic hour start time.
 pHourE = 1100   # (24hr format!) Panic hour end time.
 
-URLs = [ 'https://www.bestbuy.com/site/nvidia-geforce-rtx-3080-10gb-gddr6x-pci-express-4-0-graphics-card-titanium-and-black/6429440.p?skuId=6429440',
-         'https://www.bestbuy.com/site/evga-geforce-rtx-3080-xc3-ultra-gaming-10gb-gddr6-pci-express-4-0-graphics-card/6432400.p?skuId=6432400',
-         'https://www.bestbuy.com/site/evga-geforce-rtx-3080-ftw3-gaming-10gb-gddr6x-pci-express-4-0-graphics-card/6436191.p?skuId=6436191',
-         'https://www.bestbuy.com/site/evga-geforce-rtx-3080-ftw3-ultra-gaming-10gb-gddr6-pci-express-4-0-graphics-card/6436196.p?skuId=6436196',
-         'https://www.bestbuy.com/site/evga-geforce-rtx-3080-xc3-black-gaming-10gb-gddr6-pci-express-4-0-graphics-card/6432399.p?skuId=6432399',
-         'https://www.bestbuy.com/site/evga-geforce-rtx-3080-xc3-gaming-10gb-gddr6-pci-express-4-0-graphics-card/6436194.p?skuId=6436194'
+URLs = ['https://www.bestbuy.com/site/nvidia-geforce-rtx-3080-10gb-gddr6x-pci-express-4-0-graphics-card-titanium-and-black/6429440.p?skuId=6429440',
+        'https://www.bestbuy.com/site/evga-geforce-rtx-3080-xc3-ultra-gaming-10gb-gddr6-pci-express-4-0-graphics-card/6432400.p?skuId=6432400',
+        'https://www.bestbuy.com/site/evga-geforce-rtx-3080-ftw3-gaming-10gb-gddr6x-pci-express-4-0-graphics-card/6436191.p?skuId=6436191',
+        'https://www.bestbuy.com/site/evga-geforce-rtx-3080-ftw3-ultra-gaming-10gb-gddr6-pci-express-4-0-graphics-card/6436196.p?skuId=6436196',
+        'https://www.bestbuy.com/site/evga-geforce-rtx-3080-xc3-black-gaming-10gb-gddr6-pci-express-4-0-graphics-card/6432399.p?skuId=6432399',
+        'https://www.bestbuy.com/site/evga-geforce-rtx-3080-xc3-gaming-10gb-gddr6-pci-express-4-0-graphics-card/6436194.p?skuId=6436194'
         ]
 
 # ---*    NO CHANGEABLE PARAMETERS BELOW THIS LINE    *-----------------------------------------------------------------
@@ -31,6 +35,7 @@ URLs = [ 'https://www.bestbuy.com/site/nvidia-geforce-rtx-3080-10gb-gddr6x-pci-e
 headers = {'User-Agent': 'Chrome/75.0.3770.80'}
 webbrowser.register('chrome', None, webbrowser.BackgroundBrowser("C://Program Files (x86)//Google//Chrome"
                                                                  "//Application//chrome.exe"))
+
 
 # Current time function. Sloppy method to derive 24hr time format into comparable format.
 def curtime():
@@ -48,6 +53,14 @@ def curtime():
 # Add 1 to the current position in URL array to avoid a confusing 'item 0' printout in console.
 def curitem():
     return str(URLs.index(x) + 1)
+
+
+# Fetch and parse current item and time to logfile
+def logstock():
+    # write html with UTF encoded website content
+    f = open("Stock Log.txt", "a", encoding='utf-8')
+    f.write(str('Item ' + curitem() + ' detected in stock at ' + str(curtime()) + '\n'))
+    f.close()
 
 
 # Master loop.
@@ -84,6 +97,8 @@ while True:
                     continue
             if Diag:
                 ctypes.windll.user32.MessageBoxW(0, 'Item ' + curitem() + ' is in stock!', 'Stock Alert!', 1)
+            if sLog:
+                logstock()
         else:
             print('[WARN] Unexpected error.')
             if not AddToCart and not SoldOut:
@@ -92,4 +107,4 @@ while True:
     print('[TIME] Retrying in ' + str(delay) + ' seconds.')
     time.sleep(delay)
     if Clearc:
-        os.system('cls||clear')  # Clear console
+        os.system('cls||clear')  # Clear console (platform agnostic)
