@@ -9,9 +9,10 @@ import webbrowser
 import os
 
 # User defined variables
-Diag = False    # Enables an alert popup when an item is in-stock.
+Diag = False    # Enables an optional extra alert popup dialog box when an item is in-stock.
 Panic = True    # Enable panic mode: an increase in the rate of stock checks between certain hours.
 Clearc = True   # Clear console after every each each stock sweep.
+sLog = True     # Enables a logfile tracking when certain items were detected in stock.
 DelayR = 6      # Specify delay (seconds) between stock checks. Beware too low a number (you may be IP banned)
 DelayP = 4      # Specify panic delay, or a lower delay to use during panic hours
 pHourS = 1045   # (24hr format!) Panic hour start time.
@@ -50,6 +51,13 @@ def curitem():
     return str(URLs.index(x) + 1)
 
 
+def logstock():
+    # write html with UTF encoded website content
+    f = open("Stock Log.txt", "a", encoding='utf-8')
+    f.write(str('Item ' + curitem() + ' detected in stock at ' + str(curtime()) + '\n'))
+    f.close()
+
+
 # Master loop.
 while True:
     # ('The time is: ' + curtime())
@@ -84,6 +92,8 @@ while True:
                     continue
             if Diag:
                 ctypes.windll.user32.MessageBoxW(0, 'Item ' + curitem() + ' is in stock!', 'Stock Alert!', 1)
+            if sLog:
+                logstock()
         else:
             print('[WARN] Unexpected error.')
             if not AddToCart and not SoldOut:
