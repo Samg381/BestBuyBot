@@ -1,5 +1,6 @@
 # BestBuyBot
-Extremely basic Python bot to detect when an item is in stock at Best Buy. \n
+Extremely basic bot to detect when an item is in stock at Best Buy.
+
 Optional features:
  - Customizable check speed
  - Notification dialoge box
