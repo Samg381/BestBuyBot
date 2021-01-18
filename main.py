@@ -46,7 +46,7 @@ def curtime():
         adjustedmins = str(0) + str(t1.tm_min)
     if len(str(t1.tm_hour)) < 2:
         adjustedhours = str(0) + str(t1.tm_hour)
-        print(adjustedhours)
+        # print(adjustedhours)
     return int(str(adjustedhours) + str(adjustedmins))
 
 
