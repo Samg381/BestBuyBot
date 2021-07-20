@@ -16,21 +16,25 @@ Diag = False    # Enables an optional extra alert popup dialog box when an item 
 Panic = True    # Enable panic mode: an increase in the rate of stock checks between certain hours.
 Clearc = True   # Clear console after every each each stock sweep.
 sLog = True     # Enables a logfile tracking when certain items were detected in stock.
-DelayR = 6      # Specify delay (seconds) between stock checks. Beware too low a number (you may be IP banned)
-DelayP = 4      # Specify panic delay, or a lower delay to use during panic hours
+DelayR = 10      # Specify delay (seconds) between stock checks. Beware too low a number (you may be IP banned)
+DelayP = 6      # Specify panic delay, or a lower delay to use during panic hours.
 pHourS = 1045   # (24hr format!) Panic hour start time.
-pHourE = 1100   # (24hr format!) Panic hour end time.
+pHourE = 1100   # (24hr format!) Panic hour end time. (Recommend no longer than 15 minute duration)
 
-URLs = ['https://www.bestbuy.com/site/nvidia-geforce-rtx-3090-24gb-gddr6x-pci-express-4-0-graphics-card-titanium-and-black/6429434.p?skuId=6429434',
-        'https://www.bestbuy.com/site/nvidia-geforce-rtx-3080-10gb-gddr6x-pci-express-4-0-graphics-card-titanium-and-black/6429440.p?skuId=6429440',
-        'https://www.bestbuy.com/site/evga-geforce-rtx-3090-xc3-ultra-gaming-24gb-gddr6-pci-express-4-0-graphics-card/6434198.p?skuId=6434198',
-        'https://www.bestbuy.com/site/evga-geforce-rtx-3080-ftw3-gaming-10gb-gddr6x-pci-express-4-0-graphics-card/6436191.p?skuId=6436191',
-        'https://www.bestbuy.com/site/evga-geforce-rtx-3090-ftw3-gaming-24gb-gddr6-pci-express-4-0-graphics-card/6436193.p?skuId=6436193',
+URLs = ['https://www.bestbuy.com/site/nvidia-geforce-rtx-3080-10gb-gddr6x-pci-express-4-0-graphics-card-titanium-and-black/6429440.p?skuId=6429440',
+        'https://www.bestbuy.com/site/nvidia-geforce-rtx-3090-24gb-gddr6x-pci-express-4-0-graphics-card-titanium-and-black/6429434.p?skuId=6429434/',
+        'https://www.bestbuy.com/site/nvidia-geforce-rtx-3060-ti-8gb-gddr6-pci-express-4-0-graphics-card-steel-and-black/6439402.p?skuId=6439402',
+        'https://www.bestbuy.com/site/nvidia-geforce-rtx-3070-8gb-gddr6-pci-express-4-0-graphics-card-dark-platinum-and-black/6429442.p?skuId=6429442',
+        'https://www.bestbuy.com/site/nvidia-geforce-rtx-3080-ti-12gb-gddr6x-pci-express-4-0-graphics-card-titanium-and-black/6462956.p?skuId=6462956',
+        'https://www.bestbuy.com/site/nvidia-geforce-rtx-3070-ti-8gb-gddr6x-pci-express-4-0-graphics-card-dark-platinum-and-black/6465789.p?skuId=6465789',
+        'https://www.bestbuy.com/site/evga-geforce-rtx-3070-xc3-ultra-gaming-8gb-gddr6-pci-express-4-0-graphics-card/6439299.p?skuId=6439299',
         'https://www.bestbuy.com/site/evga-geforce-rtx-3080-xc3-ultra-gaming-10gb-gddr6-pci-express-4-0-graphics-card/6432400.p?skuId=6432400',
-        'https://www.bestbuy.com/site/evga-geforce-rtx-3080-ftw3-ultra-gaming-10gb-gddr6-pci-express-4-0-graphics-card/6436196.p?skuId=6436196',
-        'https://www.bestbuy.com/site/evga-geforce-rtx-3080-xc3-black-gaming-10gb-gddr6-pci-express-4-0-graphics-card/6432399.p?skuId=6432399',
-        'https://www.bestbuy.com/site/evga-geforce-rtx-3080-xc3-gaming-10gb-gddr6-pci-express-4-0-graphics-card/6436194.p?skuId=6436194',
-        'https://www.bestbuy.com/site/evga-geforce-rtx-3090-ftw3-ultra-gaming-24gb-gddr6-pci-express-4-0-graphics-card/6436192.p?skuId=6436192'
+        'https://www.bestbuy.com/site/evga-nvidia-geforce-rtx-3060-xc-gaming-12gb-gddr6-pci-express-4-0-graphics-card/6454329.p?skuId=6454329',
+        'https://www.bestbuy.com/site/evga-nvidia-geforce-rtx-3080-ti-ftw3-ultra-gaming-12gb-gddr6x-pci-express-4-0-graphics-card/6467808.p?skuId=6467808',
+        'https://www.bestbuy.com/site/evga-nvidia-geforce-rtx-3060-ti-ftw3-gaming-8gb-gddr6-pci-express-4-0-graphics-card/6444444.p?skuId=6444444',
+        'https://www.bestbuy.com/site/evga-geforce-rtx-3090-xc3-ultra-gaming-24gb-gddr6-pci-express-4-0-graphics-card/6434198.p?skuId=6434198',
+        'https://www.bestbuy.com/site/evga-nvidia-geforce-rtx-3070-ti-ftw3-ultra-gaming-8gb-gddr6x-pci-express-4-0-graphics-card/6467285.p?skuId=6467285',
+        'https://www.bestbuy.com/site/macbook-air-13-3-laptop-apple-m1-chip-8gb-memory-512gb-ssd-latest-model-space-gray/6200722.p?skuId=6200722'
         ]
 
 # ---*    NO CHANGEABLE PARAMETERS BELOW THIS LINE    *-----------------------------------------------------------------
@@ -98,10 +102,10 @@ while True:
             webbrowser.get('chrome').open(x)
             print('[ALRT] ITEM ' + curitem() + ' IS IN STOCK!')
             beepNum = 0
-            while beepNum < 4:
+            while beepNum < 6:
                 winsound.Beep(370 + beepNum * 200, 80)
                 beepNum += 1
-                if beepNum == 4:
+                if beepNum == 6:
                     continue
             if Diag:
                 ctypes.windll.user32.MessageBoxW(0, 'Item ' + curitem() + ' is in stock!', 'Stock Alert!', 1)
