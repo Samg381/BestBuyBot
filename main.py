@@ -21,12 +21,16 @@ DelayP = 4      # Specify panic delay, or a lower delay to use during panic hour
 pHourS = 1045   # (24hr format!) Panic hour start time.
 pHourE = 1100   # (24hr format!) Panic hour end time.
 
-URLs = ['https://www.bestbuy.com/site/nvidia-geforce-rtx-3080-10gb-gddr6x-pci-express-4-0-graphics-card-titanium-and-black/6429440.p?skuId=6429440',
-        'https://www.bestbuy.com/site/evga-geforce-rtx-3080-xc3-ultra-gaming-10gb-gddr6-pci-express-4-0-graphics-card/6432400.p?skuId=6432400',
+URLs = ['https://www.bestbuy.com/site/nvidia-geforce-rtx-3090-24gb-gddr6x-pci-express-4-0-graphics-card-titanium-and-black/6429434.p?skuId=6429434',
+        'https://www.bestbuy.com/site/nvidia-geforce-rtx-3080-10gb-gddr6x-pci-express-4-0-graphics-card-titanium-and-black/6429440.p?skuId=6429440',
+        'https://www.bestbuy.com/site/evga-geforce-rtx-3090-xc3-ultra-gaming-24gb-gddr6-pci-express-4-0-graphics-card/6434198.p?skuId=6434198',
         'https://www.bestbuy.com/site/evga-geforce-rtx-3080-ftw3-gaming-10gb-gddr6x-pci-express-4-0-graphics-card/6436191.p?skuId=6436191',
+        'https://www.bestbuy.com/site/evga-geforce-rtx-3090-ftw3-gaming-24gb-gddr6-pci-express-4-0-graphics-card/6436193.p?skuId=6436193',
+        'https://www.bestbuy.com/site/evga-geforce-rtx-3080-xc3-ultra-gaming-10gb-gddr6-pci-express-4-0-graphics-card/6432400.p?skuId=6432400',
         'https://www.bestbuy.com/site/evga-geforce-rtx-3080-ftw3-ultra-gaming-10gb-gddr6-pci-express-4-0-graphics-card/6436196.p?skuId=6436196',
         'https://www.bestbuy.com/site/evga-geforce-rtx-3080-xc3-black-gaming-10gb-gddr6-pci-express-4-0-graphics-card/6432399.p?skuId=6432399',
-        'https://www.bestbuy.com/site/evga-geforce-rtx-3080-xc3-gaming-10gb-gddr6-pci-express-4-0-graphics-card/6436194.p?skuId=6436194'
+        'https://www.bestbuy.com/site/evga-geforce-rtx-3080-xc3-gaming-10gb-gddr6-pci-express-4-0-graphics-card/6436194.p?skuId=6436194',
+        'https://www.bestbuy.com/site/evga-geforce-rtx-3090-ftw3-ultra-gaming-24gb-gddr6-pci-express-4-0-graphics-card/6436192.p?skuId=6436192'
         ]
 
 # ---*    NO CHANGEABLE PARAMETERS BELOW THIS LINE    *-----------------------------------------------------------------
@@ -80,9 +84,13 @@ while True:
         # Parse the content of the webpage in HTML format
         soup = BeautifulSoup(page.content, 'lxml')
         Focus = soup.find_all("div", class_=re.compile("fulfillment-add-to-cart-button"))
-        # print(Focus[0])
-        AddToCart = Focus[0].find_all(text=re.compile('Add to Cart'))
-        SoldOut = Focus[0].find_all(text=re.compile('Sold Out|Coming Soon'))
+        if Focus:
+            #print(Focus[0])
+            AddToCart = Focus[0].find_all(text=re.compile('Add to Cart'))
+            SoldOut = Focus[0].find_all(text=re.compile('Sold Out|Coming Soon'))
+        else:
+            print('[ERROR] Item out of stock or page issue!')
+            continue
 
         if SoldOut:
             print('[MESG] Item ' + curitem() + ' is out of stock.')
